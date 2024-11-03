@@ -1,0 +1,15 @@
+org: solomon
+app: simple-store
+service: simple-store
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+
+functions:
+  hello:
+    handler: src/server.graphqlHandler
+    events:
+      - httpApi:
+          path: /graphql
+          method: ANY
