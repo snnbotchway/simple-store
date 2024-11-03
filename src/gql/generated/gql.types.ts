@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { UserEntity } from '../../users/users.types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -17,7 +18,13 @@ export type Scalars = {
 };
 
 export type Mutation = {
-  storeNumber?: Maybe<Scalars['Int']['output']>;
+  createUser: User;
+  storeNumber: Scalars['Int']['output'];
+};
+
+
+export type MutationCreateUserArgs = {
+  user: UserInput;
 };
 
 
@@ -26,7 +33,19 @@ export type MutationStoreNumberArgs = {
 };
 
 export type Query = {
-  retrieveNumber?: Maybe<Scalars['Int']['output']>;
+  getUsers: Array<User>;
+  retrieveNumber: Scalars['Int']['output'];
+};
+
+export type User = {
+  _id: Scalars['ID']['output'];
+  email: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+};
+
+export type UserInput = {
+  email: Scalars['String']['input'];
+  name: Scalars['String']['input'];
 };
 
 export type AdditionalEntityFields = {
@@ -108,8 +127,11 @@ export type ResolversTypes = {
   Mutation: ResolverTypeWrapper<{}>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Query: ResolverTypeWrapper<{}>;
-  AdditionalEntityFields: AdditionalEntityFields;
+  User: ResolverTypeWrapper<UserEntity>;
+  ID: ResolverTypeWrapper<Scalars['ID']['output']>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
+  UserInput: UserInput;
+  AdditionalEntityFields: AdditionalEntityFields;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
 };
 
@@ -118,8 +140,11 @@ export type ResolversParentTypes = {
   Mutation: {};
   Int: Scalars['Int']['output'];
   Query: {};
-  AdditionalEntityFields: AdditionalEntityFields;
+  User: UserEntity;
+  ID: Scalars['ID']['output'];
   String: Scalars['String']['output'];
+  UserInput: UserInput;
+  AdditionalEntityFields: AdditionalEntityFields;
   Boolean: Scalars['Boolean']['output'];
 };
 
@@ -171,16 +196,26 @@ export type MapDirectiveArgs = {
 export type MapDirectiveResolver<Result, Parent, ContextType = any, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  storeNumber?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType, RequireFields<MutationStoreNumberArgs, 'num'>>;
+  createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'user'>>;
+  storeNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationStoreNumberArgs, 'num'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  retrieveNumber?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  getUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
+  retrieveNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+};
+
+export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  _id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
 };
 
 export type DirectiveResolvers<ContextType = any> = {

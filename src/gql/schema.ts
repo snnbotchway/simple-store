@@ -1,11 +1,24 @@
 const schema = `#graphql
   type Query {
-    retrieveNumber: Int
+    retrieveNumber: Int!
+    getUsers: [User!]!
   }
 
   type Mutation {
-    storeNumber(num: Int!): Int
+    storeNumber(num: Int!): Int!
+    createUser(user: UserInput!): User!
   }
-`;
 
-module.exports = schema;
+  type User {
+    _id: ID!
+    name: String!
+    email: String!
+  }
+
+  input UserInput {
+    name: String!
+    email: String!
+  }
+`
+
+module.exports = schema
