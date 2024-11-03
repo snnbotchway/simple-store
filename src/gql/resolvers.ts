@@ -1,8 +1,10 @@
 import { storageService } from "../contracts"
 import { usersService } from "../users/users.service"
 import { Resolvers } from "./generated/gql.types"
+import { EmailScalar } from "./scalars/email"
 
 export const resolvers: Resolvers = {
+    Email: EmailScalar,
     Query: {
         number: storageService.retrieveNumber,
         users: usersService.getUsers
