@@ -1,6 +1,10 @@
 const schema = `#graphql
   type Query {
-    hello: String
+    retrieveNumber: Int
+  }
+
+  type Mutation {
+    storeNumber(num: Int!): Int
   }
 `;
 
