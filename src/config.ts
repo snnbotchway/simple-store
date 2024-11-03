@@ -6,9 +6,7 @@ const getRequiredVariable = (variable: string) => {
     return value
 }
 
-export const IS_DEVELOPMENT = process.env.NODE_ENV === "development"
-export const IS_PRODUCTION = !IS_DEVELOPMENT
-
+export const DEBUG = process.env.DEBUG === "true"
 export const MONGO_URI = getRequiredVariable("MONGO_URI")
 export const PRIVATE_KEY = getRequiredVariable("PRIVATE_KEY")
 export const SEPOLIA_RPC_URL = getRequiredVariable("SEPOLIA_RPC_URL")
