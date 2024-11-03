@@ -1,14 +1,7 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
+import fs from "fs";
 
-// The GraphQL schema
-const typeDefs = `#graphql
-  type Query {
-    hello: String
-  }
-`;
-
-// A map of functions which return data for the schema.
 const resolvers = {
   Query: {
     hello: () => "world",
@@ -17,7 +10,7 @@ const resolvers = {
 
 // Set up Apollo Server
 const server = new ApolloServer({
-  typeDefs,
+  typeDefs: fs.readFileSync("./src/gql/schema.graphql", "utf8"),
   resolvers,
 });
 
