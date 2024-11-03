@@ -1,9 +1,7 @@
 import { Resolvers } from "./generated/gql.types";
 
-const resolvers: Resolvers = {
+export const resolvers: Resolvers = {
   Query: {
-    hello: () => "world",
-  },
+    hello: () => "world"
+  }
 };
-
-export default resolvers;
