@@ -5,6 +5,10 @@ service: simple-store
 provider:
   name: aws
   runtime: nodejs20.x
+  timeout: 60
+
+custom:
+  secrets: ${file(secrets.${opt:stage, self:provider.stage}.yml)}
 
 functions:
   store:
@@ -13,3 +17,11 @@ functions:
       - httpApi:
           path: /graphql
           method: ANY
+    environment:
+      MONGO_URI: ${self:custom.secrets.MONGO_URI}
+      NODE_ENV: ${self:custom.secrets.NODE_ENV}
+      PRIVATE_KEY: ${self:custom.secrets.PRIVATE_KEY}
+      SEPOLIA_RPC_URL: ${self:custom.secrets.SEPOLIA_RPC_URL}
+
+plugins:
+  - serverless-secrets-plugin
