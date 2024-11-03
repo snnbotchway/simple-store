@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { UserEntity } from '../../users/users.types';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -15,11 +15,12 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
+  Email: { input: any; output: any; }
 };
 
 export type Mutation = {
   createUser: User;
-  storeNumber: Scalars['Int']['output'];
+  storeNumber: StoreNumberResponse;
 };
 
 
@@ -37,14 +38,18 @@ export type Query = {
   users: Array<User>;
 };
 
+export type StoreNumberResponse = {
+  hash?: Maybe<Scalars['String']['output']>;
+};
+
 export type User = {
   _id: Scalars['ID']['output'];
-  email: Scalars['String']['output'];
+  email: Scalars['Email']['output'];
   name: Scalars['String']['output'];
 };
 
 export type UserInput = {
-  email: Scalars['String']['input'];
+  email: Scalars['Email']['input'];
   name: Scalars['String']['input'];
 };
 
@@ -124,12 +129,14 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  Email: ResolverTypeWrapper<Scalars['Email']['output']>;
   Mutation: ResolverTypeWrapper<{}>;
   Int: ResolverTypeWrapper<Scalars['Int']['output']>;
   Query: ResolverTypeWrapper<{}>;
+  StoreNumberResponse: ResolverTypeWrapper<StoreNumberResponse>;
+  String: ResolverTypeWrapper<Scalars['String']['output']>;
   User: ResolverTypeWrapper<UserEntity>;
   ID: ResolverTypeWrapper<Scalars['ID']['output']>;
-  String: ResolverTypeWrapper<Scalars['String']['output']>;
   UserInput: UserInput;
   AdditionalEntityFields: AdditionalEntityFields;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
@@ -137,12 +144,14 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  Email: Scalars['Email']['output'];
   Mutation: {};
   Int: Scalars['Int']['output'];
   Query: {};
+  StoreNumberResponse: StoreNumberResponse;
+  String: Scalars['String']['output'];
   User: UserEntity;
   ID: Scalars['ID']['output'];
-  String: Scalars['String']['output'];
   UserInput: UserInput;
   AdditionalEntityFields: AdditionalEntityFields;
   Boolean: Scalars['Boolean']['output'];
@@ -195,9 +204,13 @@ export type MapDirectiveArgs = {
 
 export type MapDirectiveResolver<Result, Parent, ContextType = any, Args = MapDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
+export interface EmailScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Email'], any> {
+  name: 'Email';
+}
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createUser?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'user'>>;
-  storeNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType, RequireFields<MutationStoreNumberArgs, 'num'>>;
+  storeNumber?: Resolver<ResolversTypes['StoreNumberResponse'], ParentType, ContextType, RequireFields<MutationStoreNumberArgs, 'num'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -205,16 +218,23 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
 };
 
+export type StoreNumberResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['StoreNumberResponse'] = ResolversParentTypes['StoreNumberResponse']> = {
+  hash?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
   _id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['Email'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = any> = {
+  Email?: GraphQLScalarType;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  StoreNumberResponse?: StoreNumberResponseResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
 };
 

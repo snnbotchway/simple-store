@@ -1,4 +1,5 @@
 import { graphQLError } from "../../gql/errors"
+import { StoreNumberResponse } from "../../gql/generated/gql.types"
 import { storageContract, storageContractSigner } from "../contracts"
 
 class StorageService {
@@ -12,11 +13,11 @@ class StorageService {
         }
     }
 
-    storeNumber = async (num: number): Promise<number> => {
+    storeNumber = async (num: number): Promise<StoreNumberResponse> => {
         try {
             const tx = await storageContractSigner.store(num)
-            await tx.wait()
-            return num
+            const receipt = await tx.wait()
+            return { hash: receipt?.hash ?? null }
         } catch (error) {
             console.error(error)
             throw graphQLError("Failed to store number", "INTERNAL_SERVER_ERROR")
