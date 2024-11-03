@@ -1,6 +1,6 @@
 {
   "overwrite": true,
-  "schema": "./src/gql/schema.graphql",
+  "schema": "./src/gql/schema.ts",
   "generates": {
     "src/gql/generated/gql.types.ts": {
       "plugins": ["typescript", "typescript-resolvers", "typescript-mongodb"],

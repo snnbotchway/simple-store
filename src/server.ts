@@ -2,22 +2,19 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { handlers, startServerAndCreateLambdaHandler } from "@as-integrations/aws-lambda";
 import "dotenv/config";
-import fs from "fs";
-import resolvers from "./gql/resolvers";
+import { resolvers } from "./gql/resolvers";
+
+const schema = require("./gql/schema.ts");
 
 const isDevelopment = process.env.NODE_ENV === "development";
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = !isDevelopment;
 
-// Set up Apollo Server
 const server = new ApolloServer({
-  typeDefs: fs.readFileSync("./src/gql/schema.graphql", "utf8"),
-  resolvers,
+  typeDefs: schema,
+  resolvers
 });
 
-if (isDevelopment) {
-  const { url } = await startStandaloneServer(server, { listen: { port: 4000 } });
-  console.log(`🚀 Server ready at ${url}`);
-}
+if (isDevelopment) startStandaloneServer(server, { listen: { port: 4000 } }).then(({ url }) => console.log(`🚀 Server ready at ${url}`));
 
 export const graphqlHandler = isProduction
   ? startServerAndCreateLambdaHandler(server, handlers.createAPIGatewayProxyEventV2RequestHandler())
