@@ -1,7 +1,11 @@
-import { Resolvers } from "./generated/gql.types";
+import { storageService } from "../contracts"
+import { Resolvers } from "./generated/gql.types"
 
 export const resolvers: Resolvers = {
-  Query: {
-    hello: () => "world"
-  }
-};
+    Query: {
+        retrieveNumber: storageService.retrieveNumber
+    },
+    Mutation: {
+        storeNumber: (_, { num }) => storageService.storeNumber(num)
+    }
+}
