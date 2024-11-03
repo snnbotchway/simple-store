@@ -1,12 +1,12 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
+import { handlers, startServerAndCreateLambdaHandler } from "@as-integrations/aws-lambda";
+import "dotenv/config";
 import fs from "fs";
+import resolvers from "./gql/resolvers";
 
-const resolvers = {
-  Query: {
-    hello: () => "world",
-  },
-};
+const isDevelopment = process.env.NODE_ENV === "development";
+const isProduction = process.env.NODE_ENV === "production";
 
 // Set up Apollo Server
 const server = new ApolloServer({
@@ -14,11 +14,11 @@ const server = new ApolloServer({
   resolvers,
 });
 
-// TODO: remove this
-const { url } = await startStandaloneServer(server, {
-  listen: { port: 4000 },
-});
-console.log(`🚀 Server ready at ${url}`);
+if (isDevelopment) {
+  const { url } = await startStandaloneServer(server, { listen: { port: 4000 } });
+  console.log(`🚀 Server ready at ${url}`);
+}
 
-// TODO: enable this
-// export const graphqlHandler = startServerAndCreateLambdaHandler(server, handlers.createAPIGatewayProxyEventV2RequestHandler());
+export const graphqlHandler = isProduction
+  ? startServerAndCreateLambdaHandler(server, handlers.createAPIGatewayProxyEventV2RequestHandler())
+  : undefined;
