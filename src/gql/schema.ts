@@ -1,7 +1,7 @@
 const schema = `#graphql
   type Query {
-    retrieveNumber: Int!
-    getUsers: [User!]!
+    number: Int!
+    users: [User!]!
   }
 
   type Mutation {

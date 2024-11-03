@@ -33,8 +33,8 @@ export type MutationStoreNumberArgs = {
 };
 
 export type Query = {
-  getUsers: Array<User>;
-  retrieveNumber: Scalars['Int']['output'];
+  number: Scalars['Int']['output'];
+  users: Array<User>;
 };
 
 export type User = {
@@ -201,8 +201,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  getUsers?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
-  retrieveNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  users?: Resolver<Array<ResolversTypes['User']>, ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {

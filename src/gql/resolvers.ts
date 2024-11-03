@@ -4,8 +4,8 @@ import { Resolvers } from "./generated/gql.types"
 
 export const resolvers: Resolvers = {
     Query: {
-        retrieveNumber: storageService.retrieveNumber,
-        getUsers: usersService.getUsers
+        number: storageService.retrieveNumber,
+        users: usersService.getUsers
     },
     Mutation: {
         storeNumber: (_, { num }) => storageService.storeNumber(num),
